@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/auth_cubit.dart';
 import 'home_screen.dart';
 import 'leaderboard_screen.dart';
+import 'profile_screen.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -22,7 +21,7 @@ class _MainShellState extends State<MainShell> {
         children: const [
           HomeScreen(),
           LeaderboardScreen(),
-          _ProfilePlaceholder(),
+          ProfileScreen(),
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -42,31 +41,6 @@ class _MainShellState extends State<MainShell> {
               selectedIcon: Icon(Icons.person),
               label: 'Profile'),
         ],
-      ),
-    );
-  }
-}
-
-// Temporary tab. It is replaced in Step 12.
-class _ProfilePlaceholder extends StatelessWidget {
-  const _ProfilePlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Full profile comes in Step 12'),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () => context.read<AuthCubit>().signOut(),
-              child: const Text('Sign Out'),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -65,6 +65,13 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthError('Google sign-in failed: $e'));
     }
   }
+  bool get canChangePassword => _auth.canChangePassword;
+
+  Future<void> changePassword(String current, String next) =>
+      _auth.changePassword(current, next);
+
+  Future<void> requestEmailChange(String current, String newEmail) =>
+      _auth.requestEmailChange(current, newEmail);
 
   Future<void> signOut() => _auth.signOut();
 

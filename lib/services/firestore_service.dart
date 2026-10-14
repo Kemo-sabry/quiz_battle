@@ -35,17 +35,26 @@ class FirestoreService {
   // ---------------------------------------------------------------
   // USERS
   // ---------------------------------------------------------------
-
+  
   /// Creates users/{uid} the first time someone logs in.
+  /// For existing users it keeps the saved email in sync.
   Future<void> createUserIfMissing(User user) async {
     final ref = _users.doc(user.uid);
     final snap = await ref.get();
-    if (snap.exists) return;
+    final email = (user.email ?? '').toLowerCase();
+
+    if (snap.exists) {
+      final stored = snap.data()?['email']?.toString() ?? '';
+      if (email.isNotEmpty && stored != email) {
+        await ref.update({'email': email});
+      }
+      return;
+    }
 
     final model = UserModel(
       uid: user.uid,
       displayName: user.displayName ?? user.email?.split('@').first ?? 'Player',
-      email: user.email ?? '',
+      email: email,
       photoUrl: user.photoURL,
     );
     await ref.set(model.toMap());
